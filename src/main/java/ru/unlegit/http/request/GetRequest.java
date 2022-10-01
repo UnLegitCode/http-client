@@ -1,4 +1,4 @@
-package ru.unlegit.http;
+package ru.unlegit.http.request;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

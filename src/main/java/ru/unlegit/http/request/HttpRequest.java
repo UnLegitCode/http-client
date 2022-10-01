@@ -1,4 +1,4 @@
-package ru.unlegit.http;
+package ru.unlegit.http.request;
 
 import javafx.util.Pair;
 import lombok.AccessLevel;
@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
+import ru.unlegit.http.HttpClient;
+import ru.unlegit.http.config.HttpConfig;
+import ru.unlegit.http.HttpResponse;
+import ru.unlegit.http.JsonContent;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -25,7 +29,7 @@ public abstract class HttpRequest {
     @SneakyThrows
     public HttpResponse execute(HttpClient client) {
         HttpConfig config = client.getConfig();
-        HttpURLConnection connection = (HttpURLConnection) (new URL(String.format(url, config.isUseSecureProtocol() ? "https" : "http"))).openConnection();
+        HttpURLConnection connection = (HttpURLConnection) (new URL(String.format(url, config.isUseSecureProtocol() ? "https" : "http", client.getAddress()))).openConnection();
 
         if (config.getConnectTimeout() > 0) {
             connection.setConnectTimeout(config.getConnectTimeout());
@@ -70,11 +74,9 @@ public abstract class HttpRequest {
         }
 
         protected String constructURL() {
-            validate();
+            StringBuilder urlBuilder = new StringBuilder("%s").append("://").append("%s");
 
-            StringBuilder urlBuilder = new StringBuilder("%s").append("://").append(paths.get(0));
-
-            for (int i = 1; i < paths.size(); i++) {
+            for (int i = 0; i < paths.size(); i++) {
                 urlBuilder.append("/").append(paths.get(i));
             }
 
@@ -86,12 +88,6 @@ public abstract class HttpRequest {
             }
 
             return urlBuilder.toString();
-        }
-
-        private void validate() {
-            if (paths.isEmpty()) {
-                throw new IllegalStateException("no url path");
-            }
         }
 
         public abstract R build();

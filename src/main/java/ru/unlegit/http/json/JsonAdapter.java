@@ -1,11 +1,11 @@
-package ru.unlegit.http;
+package ru.unlegit.http.json;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-public abstract class JsonAdapter<J extends JsonElement, T> implements JsonSerializer<T>, JsonDeserializer<T> {
+public abstract class JsonAdapter<J extends JsonElement, T> extends AbstractJsonAdapter<T> {
 
     private final JsonType<J> jsonType = (JsonType<J>) (new TypeToken<J>() {}.isAssignableFrom(JsonObject.class) ? JsonType.OBJECT : JsonType.ARRAY);
 

@@ -1,8 +1,9 @@
-package ru.unlegit.http;
+package ru.unlegit.http.request;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
+import ru.unlegit.http.HttpClient;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
